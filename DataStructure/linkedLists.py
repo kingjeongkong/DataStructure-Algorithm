@@ -66,6 +66,7 @@ class SinglyLinkedList:
     
     if position == 0:
       self.head = temp.next
+      temp = None
       return
     
     for i in range(position - 1):
@@ -73,12 +74,13 @@ class SinglyLinkedList:
       if not temp:
         break
 
-    if not temp or temp.next:
+    if not temp or not temp.next:
       print("Position is out of bounds.")
       return
     
-    temp.next = temp.next.next
+    next_node = temp.next.next
     temp.next = None
+    temp.next = next_node
 
   def traverse(self):
     current = self.head
@@ -87,7 +89,7 @@ class SinglyLinkedList:
       current = current.next
     print('None')
 
-  def searching(self, data):
+  def search(self, data):
     current = self.head
     while current:
       if current.data == data:
@@ -95,4 +97,29 @@ class SinglyLinkedList:
       current = current.next
     return False
       
-    
+  def reverse(self):
+    current = self.head
+    prev = None
+    while current:
+      next_node = current.next
+      current.next = prev
+      prev = current
+      current = next_node
+    self.head = prev
+
+singly_linked_list = SinglyLinkedList()
+
+singly_linked_list.insert_at_beginning(3)
+singly_linked_list.insert_at_beginning(0)
+singly_linked_list.insert_at_end(5)
+singly_linked_list.insert_at_end(6)
+singly_linked_list.insert_after_node(3, 7)
+
+singly_linked_list.traverse()
+print(singly_linked_list.search(2.5))
+print(singly_linked_list.search(3)) 
+
+singly_linked_list.delete_node(5)
+singly_linked_list.traverse()
+singly_linked_list.delete_at_position(2)
+singly_linked_list.traverse()
