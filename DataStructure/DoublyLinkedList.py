@@ -52,3 +52,70 @@ class DoublyLinkedList:
             self.tail = new_node
 
         current.next = new_node
+
+    def delete_node(self, data):
+        if not self.head:
+            print('List is empty')
+            return
+
+        current = self.head
+
+        # If head node itself holds the data to be deleted
+        if current.data == data:
+            if current.next:
+                self.head = current.next
+                self.head.prev = None
+            else:
+                self.head = None
+                self.tail = None
+            return
+
+        while current and current.data != data:
+            current = current.next
+
+        if not current:
+            print(f"Node with data {data} not found.")
+            return
+        
+        # If node to be deleted is tail
+        if current == self.tail:
+            self.tail = current.prev
+            self.tail.next = None
+            return
+
+        # If node to be deleted is middle node
+        current.prev.next = current.next
+        current.next.prev = current.prev
+
+    def delete_at_position(self, position):
+        if not self.head:
+            print("List is empty")
+            return
+
+        if position == 0:
+            if self.head.next:
+                self.head = self.head.next
+                self.head.prev = None
+            else:
+                self.head = None
+                self.tail = None
+            return
+
+        current = self.head 
+        for i in range(position):
+            if not current:
+                print("Position is out of bounds.")
+                return
+            current = current.next
+
+        if not current:
+            print("Position is out of bounds after the loop.")
+            return
+
+        if current == self.tail:
+            self.tail = current.prev
+            self.tail.prev = None
+            return
+
+        current.prev.next = current.next
+        current.next.prev = current.prev
