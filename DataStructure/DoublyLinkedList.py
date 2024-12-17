@@ -119,3 +119,45 @@ class DoublyLinkedList:
 
         current.prev.next = current.next
         current.next.prev = current.prev
+
+    def traverse_forward(self):
+        current = self.head
+        while current:
+            print(current.data, end=" <-> ")
+            current = current.next
+        print("None")
+
+    def traverse_backward(self):
+        current = self.tail
+        while current:
+            print(current.data, end=" <->")
+            current = current.prev
+        print("None")
+
+    def search(self, data):
+        current = self.head
+        while current:
+            if current.data == data:
+                return True
+            current = current.next
+        return False
+
+dll = DoublyLinkedList()
+
+dll.insert_at_beginning(3)
+dll.insert_at_beginning(2)
+dll.insert_at_beginning(1)
+dll.insert_at_end(4)
+dll.insert_after_node(3, 3.5)
+
+print("Forward traversal:")
+dll.traverse_forward()
+print("\nBackward traversal:")
+dll.traverse_backward()
+
+dll.delete_node(3)
+print("\nAfter deleting 3:")
+dll.traverse_forward()
+
+print("\nSearching for 2:", dll.search(2))
+print("Searching for 3:", dll.search(3))
