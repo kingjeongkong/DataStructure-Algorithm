@@ -128,3 +128,131 @@ class BinaryTree:
             return 1 + calculate_size(node.left) + calculate_size(node.right)
 
         return calculate_size(node)
+
+class BinarySearchTree:
+    def __init__(self):
+        self.root = None
+
+    def insert(self, data):
+        if not self.root:
+            self.root = TreeNode(data)
+            return
+        
+        def insert_recursive(node, data):
+            if data < node.data:
+                if node.left is None:
+                    node.left = TreeNode(data)
+                else:
+                    insert_recursive(node.left, data)
+            else:
+                if node.right is None:
+                    node.right = TreeNode(data)
+                else:
+                    insert_recursive(node.right, data)
+
+        insert_recursive(self.root, data)
+
+    def search(self, data):
+        def search_recursive(node, data):
+            if node is None or node.data == data:
+                return node
+
+            if data < node.data:
+                return search_recursive(node.left, data)
+            else:
+                return search_recursive(node.right, data)
+
+        return search_recursive(self.root, data)
+
+    def delete(self, data):
+        def min_value_node(node):
+            current = node
+            while current.left:
+                current = current.left
+            return current
+
+        def delete_recursive(node, data):
+            if not node:
+                return node
+
+            if data < node.data:
+                node.left = delete_recursive(node.left, data)
+            elif data > node.data:
+                node.right = delete_recursive(node.right, data)
+            else:
+                # Node with only one child or no child
+                if not node.left:
+                    return node.right
+                elif not node.right:
+                    return node.left
+
+                # Node with two children
+                temp = min_value_node(node.right)
+                node.data = temp.data
+                node.right = delete_recursive(node.right, temp.data)
+            
+            return node
+
+        self.root = delete_recursive(self.root, data)
+
+    def find_min(self):
+        if not self.root:
+            return None
+
+        current = self.root
+        while current.left:
+            current = current.left
+        return current.data
+
+    def find_max(self):
+        if not self.root:
+            return None
+
+        current = self.root
+        while current.right:
+            current = current.right
+        return current.data
+
+    def successor(self, data):
+        """Find the next larger value"""
+        def find_successor(node, data):
+            successor = None
+            while node:
+                if data < node.data:
+                    successor = node
+                    node = node.left
+                elif data > node.data:
+                    node = node.right
+                else:
+                    if node.right:
+                        successor = find_min(node.right)
+                    break
+            
+            if successor.data:
+                return successor.data
+            else:
+                return None
+
+        return find_successor(self.root, data)
+
+    def predecessor(self, data):
+        """Find the next smaller value"""
+        def find_predecessor(node, data):
+            predecessor = None
+            while node:
+                if data > node.data:
+                    predecessor = node
+                    node = node.right
+                elif data < node.data:
+                    node = node.left
+                else:
+                    if node.left:
+                        predecessor = find_max(node.left)
+                    break
+            
+            if predecessor.data:
+                return predecessor.data
+            else:
+                return None
+
+        return find_predecessor(self.root, data)
